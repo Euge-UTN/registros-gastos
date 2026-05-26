@@ -13,6 +13,13 @@
       "categoria": "comida",
       "fecha": "2026-05-26",
       "id": "KD0qNU0GtMI"
+    },
+    {
+      "descripcion": "Viajes",
+      "monto": 5000,
+      "categoria": "transporte",
+      "fecha": "2026-05-26",
+      "id": "yn7XNEEVH5w"
     }
   ],
   "categorias": [
