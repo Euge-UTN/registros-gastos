@@ -1,122 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from 'react';
+import servicioGastos from './services/gastos';
+import GastoForm from './components/GastoForm';
+import GastoList from './components/GastoList';
+import Resumen from './components/Resumen';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Definimos los estados globales de la aplicación [cite: 22]
+  const [gastos, setGastos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
+
+  // useEffect se ejecuta AUTOMÁTICAMENTE cuando la app se abre en el navegador [cite: 24, 25]
+  useEffect(() => {
+    const cargarDatosIniciales = async () => {
+      try {
+        const listaGastos = await servicioGastos.getGastos(); // Trae los gastos del backend [cite: 24]
+        const listaCategorias = await servicioGastos.getCategorias(); // Trae las categorías [cite: 25]
+        setGastos(listaGastos);
+        setCategorias(listaCategorias);
+      } catch (error) {
+        console.error("Error al cargar los datos del servidor:", error);
+      }
+    };
+
+    cargarDatosIniciales();
+  }, []);
+
+  // Función para agregar un gasto cuando el formulario se envíe
+  const handleAgregar = async (nuevoGasto) => {
+    try {
+      const gastoGuardado = await servicioGastos.createGasto(nuevoGasto); // Envía el POST al backend [cite: 27]
+      setGastos([...gastos, gastoGuardado]); // Agrega el resultado al estado creando una copia limpia [cite: 29]
+    } catch (error) {
+      alert("Error al guardar el gasto");
+    }
+  };
+
+  // Función para eliminar un gasto al hacer clic en su botón
+  const handleEliminar = async (id) => {
+    try {
+      await servicioGastos.deleteGasto(id); // Envía el DELETE al backend [cite: 28]
+      // Filtramos el estado para quitar el gasto borrado sin mutar el array original [cite: 29]
+      setGastos(gastos.filter(g => g.id !== id)); 
+    } catch (error) {
+      alert("Error al eliminar el gasto");
+    }
+  };
+
+  // Lógica de filtrado: si hay una categoría seleccionada, filtramos la lista [cite: 19]
+  const gastosFiltrados = categoriaSeleccionada
+    ? gastos.filter(g => g.categoria === categoriaSeleccionada)
+    : gastos;
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Control de Gastos</h1>
+      
+      {/* Formulario de carga */}
+      <GastoForm onAgregar={handleAgregar} categories={categorias} />
+      
+      {/* Panel de totales */}
+      <Resumen gastos={gastosFiltrados} />
 
-      <div className="ticks"></div>
+      {/* Selector de Filtros */}
+      <div style={{ margin: '20px 0', padding: '10px', background: '#f5f5f5', borderRadius: '5px' }}>
+        <label><strong>Filtrar por Categoría: </strong></label>
+        <select value={categoriaSeleccionada} onChange={(e) => setCategoriaSeleccionada(e.target.value)}>
+          <option value="">Todas las categorías</option>
+          {categorias.map(cat => (
+            <option key={cat.id} value={cat.nombre}>{cat.nombre}</option>
+          ))}
+        </select>
+      </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* Tabla que muestra los resultados */}
+      <GastoList gastos={gastosFiltrados} onEliminar={handleEliminar} />
+    </div>
+  );
 }
 
-export default App
+export default App;
