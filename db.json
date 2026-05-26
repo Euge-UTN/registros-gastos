@@ -1,15 +1,15 @@
 {
   "gastos": [
     {
-      "id": "2",
       "descripcion": "Juego Steam",
-      "monto": 800,
+      "monto": 8000,
       "categoria": "ocio",
-      "fecha": "2024-11-02"
+      "fecha": "2024-11-02",
+      "id": "2"
     },
     {
       "descripcion": "Merienda",
-      "monto": 1500,
+      "monto": 1800,
       "categoria": "comida",
       "fecha": "2026-05-26",
       "id": "KD0qNU0GtMI"

@@ -55,7 +55,7 @@ function GastoForm({ onAgregar, onEditar, gastoAEditar, categories }) {
 
   return (
     <form onSubmit={handleSubmit} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: gastoAEditar ? '#fff9db' : '#fff' }}>
-      <h3>{gastoAEditar ? '✏️ Editando Gasto' : '🏠 Agregar Nuevo Gasto'}</h3>
+      <h3>{gastoAEditar ? 'Editando Gasto' : 'Agregar Nuevo Gasto'}</h3>
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         <input
           type="text"
