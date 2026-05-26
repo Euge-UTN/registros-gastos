@@ -1,6 +1,6 @@
 import GastoItem from './GastoItem';
 
-function GastoList({ gastos, onEliminar }) {
+function GastoList({ gastos, onEliminar, onSeleccionarEditar }) { 
   if (gastos.length === 0) {
     return <p>No hay gastos registrados para mostrar.</p>;
   }
@@ -18,8 +18,13 @@ function GastoList({ gastos, onEliminar }) {
       </thead>
       <tbody>
         {gastos.map((gasto) => (
-          <GastoItem key={gasto.id} gasto={gasto} onEliminar={onEliminar} />
-        ))}
+          <GastoItem 
+          key={gasto.id} 
+          gasto={gasto} 
+          onEliminar={onEliminar} 
+          onSeleccionarEditar={onSeleccionarEditar} // <-- Nueva línea
+      />
+      ))}
       </tbody>
     </table>
   );

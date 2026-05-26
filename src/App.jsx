@@ -9,6 +9,7 @@ function App() {
   const [gastos, setGastos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
+  const [gastoAEditar, setGastoAEditar] = useState(null);
 
   // useEffect se ejecuta AUTOMÁTICAMENTE cuando la app se abre en el navegador [cite: 24, 25]
   useEffect(() => {
@@ -35,7 +36,20 @@ function App() {
       alert("Error al guardar el gasto");
     }
   };
-
+// Función para actualizar el gasto en el backend y el estado (PUT)
+  const handleEditar = async (id, datosActualizados) => {
+    try {
+      const mapeado = await servicioGastos.updateGasto(id, datosActualizados);
+      
+      // Actualizamos el estado reemplazando el viejo gasto por el modificado
+      setGastos(gastos.map(g => g.id === id ? mapeado : g));
+      
+      // Limpiamos el estado de edición para que el formulario vuelva al modo "crear"
+      setGastoAEditar(null);
+    } catch (error) {
+      alert("Error al actualizar el gasto");
+    }
+  };
   // Función para eliminar un gasto al hacer clic en su botón
   const handleEliminar = async (id) => {
     try {
@@ -57,7 +71,12 @@ function App() {
       <h1>Control de Gastos</h1>
       
       {/* Formulario de carga */}
-      <GastoForm onAgregar={handleAgregar} categories={categorias} />
+      <GastoForm 
+        onAgregar={handleAgregar} 
+        onEditar={handleEditar} 
+        gastoAEditar={gastoAEditar} 
+        categories={categorias} 
+      />
       
       {/* Panel de totales */}
       <Resumen gastos={gastosFiltrados} />
@@ -74,7 +93,11 @@ function App() {
       </div>
 
       {/* Tabla que muestra los resultados */}
-      <GastoList gastos={gastosFiltrados} onEliminar={handleEliminar} />
+      <GastoList 
+        gastos={gastosFiltrados} 
+        onEliminar={handleEliminar} 
+        onSeleccionarEditar={setGastoAEditar} 
+      />
     </div>
   );
 }

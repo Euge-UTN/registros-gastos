@@ -26,11 +26,16 @@ const deleteGasto = async (id) => {
   const response = await axios.delete(`${baseUrl}/gastos/${id}`);
   return response.data;
 };
-
+// Actualizar un gasto existente (PUT)
+const updateGasto = async (id, gastoActualizado) => {
+  const response = await axios.put(`${baseUrl}/gastos/${id}`, gastoActualizado);
+  return response.data;
+};
 // Exportamos las funciones para que App.jsx las pueda usar
 export default {
   getGastos,
   getCategorias,
   createGasto,
-  deleteGasto
+  deleteGasto,
+  updateGasto
 };

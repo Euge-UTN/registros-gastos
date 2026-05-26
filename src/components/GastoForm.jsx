@@ -1,33 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function GastoForm({ onAgregar, categories }) {
-  // Creamos un estado local para capturar lo que el usuario escribe en cada input
+function GastoForm({ onAgregar, onEditar, gastoAEditar, categories }) {
   const [descripcion, setDescripcion] = useState('');
   const [monto, setMonto] = useState('');
   const [categoria, setCategoria] = useState('');
   const [fecha, setFecha] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Evita que la página se recargue al enviar el formulario
+  // Este useEffect "escucha" si App nos mandó un gasto para editar.
+  // Si cambia el gasto a editar, rellena los campos automáticamente en la pantalla.
+  useEffect(() => {
+    if (gastoAEditar) {
+      setDescripcion(gastoAEditar.descripcion);
+      setMonto(gastoAEditar.monto);
+      setCategoria(gastoAEditar.categoria);
+      setFecha(gastoAEditar.fecha);
+    } else {
+      // Si es null, resetea/limpia el formulario
+      setDescripcion('');
+      setMonto('');
+      setCategoria('');
+      setFecha('');
+    }
+  }, [gastoAEditar]);
 
-    // Validación simple: que no envíen campos vacíos
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     if (!descripcion || !monto || !categoria || !fecha) {
       alert('Por favor, completa todos los campos obligatorios');
       return;
     }
 
-    // Estructuramos el nuevo objeto gasto
-    const nuevoGasto = {
+    const datosGasto = {
       descripcion,
-      monto: Number(monto), // Convertimos el texto del input a número para poder sumarlo después
+      monto: Number(monto),
       categoria,
       fecha
     };
 
-    // Le pasamos este nuevo gasto a la función que nos mandó App.jsx
-    onAgregar(nuevoGasto);
+    // Si estamos en modo edición, llamamos a onEditar pasándole el ID.
+    // Si no, llamamos al onAgregar tradicional.
+    if (gastoAEditar) {
+      onEditar(gastoAEditar.id, datosGasto);
+    } else {
+      onAgregar(datosGasto);
+    }
 
-    // Limpiamos los inputs del formulario para que queden listos otra vez
+    // Limpiamos los inputs
     setDescripcion('');
     setMonto('');
     setCategoria('');
@@ -35,12 +54,12 @@ function GastoForm({ onAgregar, categories }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '5px' }}>
-      <h3>Agregar Nuevo Gasto</h3>
+    <form onSubmit={handleSubmit} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: gastoAEditar ? '#fff9db' : '#fff' }}>
+      <h3>{gastoAEditar ? '✏️ Editando Gasto' : '🏠 Agregar Nuevo Gasto'}</h3>
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         <input
           type="text"
-          placeholder="¿En qué gastaste? (Ej: Almuerzo)"
+          placeholder="¿En qué gastaste?"
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
         />
@@ -61,7 +80,9 @@ function GastoForm({ onAgregar, categories }) {
           value={fecha}
           onChange={(e) => setFecha(e.target.value)}
         />
-        <button type="submit">Guardar</button>
+        <button type="submit" style={{ backgroundColor: gastoAEditar ? '#f59f00' : '#228be6', color: 'white', border: 'none', padding: '5px 15px', borderRadius: '4px', cursor: 'pointer' }}>
+          {gastoAEditar ? 'Actualizar' : 'Guardar'}
+        </button>
       </div>
     </form>
   );
