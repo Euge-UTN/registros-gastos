@@ -1,25 +1,41 @@
 {
   "gastos": [
     {
-      "id": "1",
-      "descripcion": "Almuerzo",
-      "monto": 1500,
-      "categoria": "comida",
-      "fecha": "2024-11-01"
-    },
-    {
       "id": "2",
       "descripcion": "Juego Steam",
       "monto": 800,
       "categoria": "ocio",
       "fecha": "2024-11-02"
+    },
+    {
+      "descripcion": "Merienda",
+      "monto": 1500,
+      "categoria": "comida",
+      "fecha": "2026-05-26",
+      "id": "KD0qNU0GtMI"
     }
   ],
   "categorias": [
-    { "id": "1", "nombre": "comida" },
-    { "id": "2", "nombre": "ocio" },
-    { "id": "3", "nombre": "transporte" },
-    { "id": "4", "nombre": "salud" },
-    { "id": "5", "nombre": "otro" }
-  ]
+    {
+      "id": "1",
+      "nombre": "comida"
+    },
+    {
+      "id": "2",
+      "nombre": "ocio"
+    },
+    {
+      "id": "3",
+      "nombre": "transporte"
+    },
+    {
+      "id": "4",
+      "nombre": "salud"
+    },
+    {
+      "id": "5",
+      "nombre": "otro"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
