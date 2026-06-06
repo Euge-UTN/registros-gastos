@@ -69,15 +69,15 @@ function App() {
     : gastos;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-950">
       <div className="max-w-4xl mx-auto px-4 py-12">
         
         {/* Título Principal */}
         <header className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
             Control de Gastos
           </h1>
-          <p className="text-sm text-slate-400 mt-2 font-light">Gestioná tus movimientos con claridad visual</p>
+          <p className="text-sm text-slate-500 mt-2 font-normal">Gestioná tus movimientos con claridad visual</p>
         </header>
 
         <div className="space-y-8">
@@ -93,15 +93,15 @@ function App() {
           <Resumen gastos={gastosFiltrados} />
 
           {/* Selector de Filtros */}
-          <div className="bg-slate-900/60 border border-slate-800/60 p-5 rounded-2xl flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center shadow-xl backdrop-blur-md">
+          <div className="bg-white border border-slate-200 p-5 rounded-2xl flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center shadow-sm">
             <div className="w-full sm:w-auto flex items-center gap-3">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 whitespace-nowrap">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap">
                 Filtrar por Categoría:
               </label>
               <select 
                 value={categoriaSeleccionada} 
                 onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-                className="w-full sm:w-56 bg-slate-950 border border-slate-800 text-slate-200 text-sm rounded-xl px-3 py-2 outline-none focus:border-indigo-500 transition-colors cursor-pointer"
+                className="w-full sm:w-56 bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-3 py-2 outline-none focus:border-indigo-500 focus:bg-white transition-all cursor-pointer shadow-inner"
               >
                 <option value="">Todas las categorías</option>
                 {categorias.map(cat => (
