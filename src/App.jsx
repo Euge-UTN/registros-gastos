@@ -1,152 +1,105 @@
-import { useState, useEffect } from 'react'
-import GastoForm from './components/GastoForm'
-import GastoList from './components/GastoList'
-import Resumen from './components/Resumen'
-import gastoService from './services/gastos'
+import { useState, useEffect } from 'react';
+import servicioGastos from './services/gastos';
+import GastoForm from './components/GastoForm';
+import GastoList from './components/GastoList';
+import Resumen from './components/Resumen';
 
 function App() {
-  // Guardo la lista de gastos y de categorías que vienen del servidor
-  const [gastos, setGastos] = useState([])
-  const [categorias, setCategorias] = useState([])
-  
-  // Estados para controlar los filtros de la pantalla y saber qué gasto se está editando
-  const [categoriaFiltro, setCategoriaFiltro] = useState('Todas')
-  const [gastoAEditar, setGastoAEditar] = useState(null)
-  
-  const [cargando, setCargando] = useState(true)
-  const [errorRed, setErrorRed] = useState(null)
-  const [criterioOrden, setCriterioOrden] = useState('fecha')
+  // Definimos los estados globales de la aplicación [cite: 22]
+  const [gastos, setGastos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
+  const [gastoAEditar, setGastoAEditar] = useState(null);
 
+  // useEffect se ejecuta AUTOMÁTICAMENTE cuando la app se abre en el navegador [cite: 24, 25]
   useEffect(() => {
-    // Busca las categorías
-    gastoService.getCategorias()
-      .then(initialCategorias => {
-        setCategorias(initialCategorias)
-        
-        // Busca los gastos
-        return gastoService.getAll()
-      })
-      .then(initialGastos => {
-        setGastos(initialGastos)
-        setCargando(false) 
-      })
-      .catch(error => {
-        console.error('Error al conectar con el servidor:', error)
-        // Si el json-server está apagado, salta este aviso en la pantalla
-        setErrorRed('No se pudo conectar con el servidor')
-        setCargando(false)
-      })
-  }, [])
+    const cargarDatosIniciales = async () => {
+      try {
+        const listaGastos = await servicioGastos.getGastos(); // Trae los gastos del backend [cite: 24]
+        const listaCategorias = await servicioGastos.getCategorias(); // Trae las categorías [cite: 25]
+        setGastos(listaGastos);
+        setCategorias(listaCategorias);
+      } catch (error) {
+        console.error("Error al cargar los datos del servidor:", error);
+      }
+    };
 
-  const handleGuardarGasto = (gastoData) => {
-    if (gastoAEditar) {
-      gastoService.update(gastoAEditar.id, gastoData)
-        .then(returnedGasto => {
-          setGastos(gastos.map(g => g.id !== gastoAEditar.id ? g : returnedGasto))
-          setGastoAEditar(null) 
-        })
-        .catch(() => setErrorRed('Error al actualizar el gasto.'))
-    } else {
-      // Creamos un gasto
-      gastoService.create(gastoData)
-        .then(returnedGasto => {
-          setGastos(gastos.concat(returnedGasto))
-        })
-        .catch(() => setErrorRed('Error al guardar el gasto'))
+    cargarDatosIniciales();
+  }, []);
+
+  // Función para agregar un gasto cuando el formulario se envíe
+  const handleAgregar = async (nuevoGasto) => {
+    try {
+      const gastoGuardado = await servicioGastos.createGasto(nuevoGasto); // Envía el POST al backend [cite: 27]
+      setGastos([...gastos, gastoGuardado]); // Agrega el resultado al estado creando una copia limpia [cite: 29]
+    } catch (error) {
+      alert("Error al guardar el gasto");
     }
-  }
-
-  // Para borrar un gasto de la lista
-  const handleEliminarGasto = (id) => {
-    if (window.confirm('¿Seguro que quieres eliminar este gasto?')) {
-      gastoService.remove(id)
-        .then(() => {
-          setGastos(gastos.filter(g => g.id !== id))
-        })
-        .catch(() => setErrorRed('Error al eliminar el gasto.'))
+  };
+// Función para actualizar el gasto en el backend y el estado (PUT)
+  const handleEditar = async (id, datosActualizados) => {
+    try {
+      const mapeado = await servicioGastos.updateGasto(id, datosActualizados);
+      
+      // Actualizamos el estado reemplazando el viejo gasto por el modificado
+      setGastos(gastos.map(g => g.id === id ? mapeado : g));
+      
+      // Limpiamos el estado de edición para que el formulario vuelva al modo "crear"
+      setGastoAEditar(null);
+    } catch (error) {
+      alert("Error al actualizar el gasto");
     }
-  }
-
-  const gastosFiltrados = categoriaFiltro === 'Todas'
-    ? gastos
-    : gastos.filter(g => g.categoriaId === categoriaFiltro)
-
-  const gastosOrdenados = [...gastosFiltrados].sort((a, b) => {
-    if (criterioOrden === 'monto') {
-      return b.monto - a.monto // De mayor a menor precio
-    } else {
-      return new Date(b.fecha) - new Date(a.fecha) // Los más nuevos primero
+  };
+  // Función para eliminar un gasto al hacer clic en su botón
+  const handleEliminar = async (id) => {
+    try {
+      await servicioGastos.deleteGasto(id); // Envía el DELETE al backend [cite: 28]
+      // Filtramos el estado para quitar el gasto borrado sin mutar el array original [cite: 29]
+      setGastos(gastos.filter(g => g.id !== id)); 
+    } catch (error) {
+      alert("Error al eliminar el gasto");
     }
-  })
+  };
 
-  const gastosConNombreCategoria = gastosOrdenados.map(gasto => {
-    // Usamos el método .toString() para asegurarnos de comparar texto con texto
-    const categoriaEncontrada = categorias.find(c => c.id.toString() === gasto.categoriaId?.toString())
-    return {
-      ...gasto,
-      // Si encuentra la categoría le clava el nombre, si no, le pone un texto por defecto
-      categoriaNombre: categoriaEncontrada ? categoriaEncontrada.nombre : 'Sin categoría'
-    }
-  })
+  // Lógica de filtrado: si hay una categoría seleccionada, filtramos la lista [cite: 19]
+  const gastosFiltrados = categoriaSeleccionada
+    ? gastos.filter(g => g.categoria === categoriaSeleccionada)
+    : gastos;
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>Control de Gastos</h1>
+      
+      {/* Formulario de carga */}
+      <GastoForm 
+        onAgregar={handleAgregar} 
+        onEditar={handleEditar} 
+        gastoAEditar={gastoAEditar} 
+        categories={categorias} 
+      />
+      
+      {/* Panel de totales */}
+      <Resumen gastos={gastosFiltrados} />
 
-      {/* Si algo sale mal con la red, se muestra este cartel */}
-      {errorRed && (
-        <div style={{ padding: '10px', backgroundColor: '#ffcccc', color: '#990000', borderRadius: '5px', marginBottom: '20px' }}>
-          ⚠️ {errorRed}
-        </div>
-      )}
+      {/* Selector de Filtros */}
+      <div style={{ margin: '20px 0', padding: '10px', background: '#f5f5f5', borderRadius: '5px' }}>
+        <label><strong>Filtrar por Categoría: </strong></label>
+        <select value={categoriaSeleccionada} onChange={(e) => setCategoriaSeleccionada(e.target.value)}>
+          <option value="">Todas las categorías</option>
+          {categorias.map(cat => (
+            <option key={cat.id} value={cat.nombre}>{cat.nombre}</option>
+          ))}
+        </select>
+      </div>
 
-      {/* Si todavía está buscando los datos en el servidor, muestra un mensaje de espera */}
-      {cargando ? (
-        <div style={{ textAlign: 'center', fontSize: '18px', padding: '40px' }}>
-          ⏳ Cargando datos del servidor...
-        </div>
-      ) : (
-        <>
-          {/* Si ya cargó todo, muestra los componentes de la página */}
-          <Resumen gastos={gastosFiltrados} />
-          
-          <GastoForm 
-            onGuardar={handleGuardarGasto} 
-            categorias={categorias}
-            gastoAEditar={gastoAEditar}
-            setGastoAEditar={setGastoAEditar}
-          />
-
-          {/* Filtros y ordenamiento para manejar la tabla */}
-          <div style={{ margin: '20px 0', display: 'flex', gap: '20px', alignItems: 'center', backgroundColor: '#f5f5f5', padding: '10px', borderRadius: '5px' }}>
-            <div>
-              <label>Filtrar por Categoría: </label>
-              <select value={categoriaFiltro} onChange={(e) => setCategoriaFiltro(e.target.value)}>
-                <option value="Todas">Todas</option>
-                {categorias.map(c => (
-                  <option key={c.id} value={c.id}>{c.nombre}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label>Ordenar por: </label>
-              <select value={criterioOrden} onChange={(e) => setCriterioOrden(e.target.value)}>
-                <option value="fecha">Fecha (Más recientes)</option>
-                <option value="monto">Monto (Mayor a menor)</option>
-              </select>
-            </div>
-          </div>
-
-          <GastoList 
-            gastos={gastosConNombreCategoria} 
-            onEliminar={handleEliminarGasto}
-            onSeleccionarEditar={setGastoAEditar}
-          />
-        </>
-      )}
+      {/* Tabla que muestra los resultados */}
+      <GastoList 
+        gastos={gastosFiltrados} 
+        onEliminar={handleEliminar} 
+        onSeleccionarEditar={setGastoAEditar} // <-- Nueva
+      />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

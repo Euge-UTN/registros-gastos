@@ -2,7 +2,7 @@ function GastoItem({ gasto, onEliminar, onSeleccionarEditar }) {
   return (
     <tr style={{ borderBottom: '1px solid #eee' }}>
       <td style={{ padding: '10px' }}>{gasto.descripcion}</td>
-      <td style={{ padding: '10px' }}><span style={{ background: '#e0e0e0', padding: '2px 6px', borderRadius: '4px' }}>{gasto.categoriaNombre}</span></td>
+      <td style={{ padding: '10px' }}><span style={{ background: '#e0e0e0', padding: '2px 6px', borderRadius: '4px' }}>{gasto.categoria}</span></td>
       <td style={{ padding: '10px' }}>{gasto.fecha}</td>
       <td style={{ padding: '10px' }}><strong>${gasto.monto}</strong></td>
       <td style={{ padding: '10px', display: 'flex', gap: '5px' }}>
