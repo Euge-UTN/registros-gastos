@@ -13,7 +13,6 @@ function GastoList({ gastos, onEliminar, onSeleccionarEditar }) {
           <th style={{ padding: '10px' }}>Categoría</th>
           <th style={{ padding: '10px' }}>Fecha</th>
           <th style={{ padding: '10px' }}>Monto</th>
-          <th style={{ padding: '10px' }}>Acciones</th>
         </tr>
       </thead>
       <tbody>
