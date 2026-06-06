@@ -1,11 +1,11 @@
 function GastoItem({ gasto, onEliminar, onSeleccionarEditar }) {
   return (
-    <tr style={{ borderBottom: '1px solid #eee' }}>
-      <td style={{ padding: '10px' }}>{gasto.descripcion}</td>
-      <td style={{ padding: '10px' }}><span style={{ background: '#e0e0e0', padding: '2px 6px', borderRadius: '4px' }}>{gasto.categoria}</span></td>
-      <td style={{ padding: '10px' }}>{gasto.fecha}</td>
-      <td style={{ padding: '10px' }}><strong>${gasto.monto}</strong></td>
-      <td style={{ padding: '10px', display: 'flex', gap: '5px' }}>
+    <tr className="border-b-2 border-gray-300 hover:bg-gray-50">
+      <td className="px-4 py-2 border-r-2 border-gray-300">{gasto.descripcion}</td>
+      <td className="px-4 py-2 border-r-2 border-gray-300">{gasto.categoria}</td>
+      <td className="px-4 py-2 border-r-2 border-gray-300">{gasto.fecha}</td>
+      <td className="px-4 py-2 border-r-2 border-gray-300 font-semibold">${gasto.monto}</td>
+      <td className="px-4 py-2 flex gap-2">
         {/* NUEVO BOTÓN DE EDITAR */}
         <button 
           onClick={() => onSeleccionarEditar(gasto)} 
