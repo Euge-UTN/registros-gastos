@@ -74,7 +74,7 @@ function App() {
         
         {/* Título Principal*/}
         <header className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
+          <h1 className="text-4xl font-black tracking-tight text-slate-900 drop-shadow-sm">
             Control de Gastos
           </h1>
         </header>
