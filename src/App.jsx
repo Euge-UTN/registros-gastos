@@ -72,9 +72,9 @@ function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-950">
       <div className="max-w-4xl mx-auto px-4 py-12">
         
-        {/* Título Principal */}
+        {/* Título Principal Corregido */}
         <header className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
             Control de Gastos
           </h1>
           <p className="text-sm text-slate-500 mt-2 font-normal">Gestioná tus movimientos con claridad visual</p>
