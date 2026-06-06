@@ -54,6 +54,12 @@ function App() {
 
   // Función para eliminar un gasto al hacer clic en su botón
   const handleEliminar = async (id) => {
+    // Si el usuario toca "Cancelar", el signo ! invierte el resultado y corta la función
+    if (!window.confirm("¿Estás seguro de eliminar el gasto?")) {
+      return;
+    }
+
+    // Si toca "Aceptar", se ejecuta tu lógica original de forma segura
     try {
       await servicioGastos.deleteGasto(id); // Envía el DELETE al backend
       // Filtramos el estado para quitar el gasto borrado sin mutar el array original
