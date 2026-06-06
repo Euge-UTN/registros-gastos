@@ -77,21 +77,27 @@ function App() {
   return (
   <div style={{ 
     minHeight: '100vh', 
-    backgroundColor: '#E5DAF2', 
-    color: '#1e293b', 
+    backgroundColor: '#f8fafc', 
+    color: '#0f172a',
     padding: '48px 16px', 
-    fontFamily: 'system-ui, -apple-system, sans-serif' 
+    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' 
   }}>
     <div style={{ maxWidth: '56rem', margin: '0 auto' }}>
       
       {/* Título Principal */}
-      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#0f172a', margin: '0' }}>
+      <header style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <h1 style={{ 
+          fontSize: '32px', 
+          fontWeight: '800', 
+          color: '#0f172a', 
+          margin: '0',
+          letterSpacing: '-0.025em'
+        }}>
           Control de Gastos
         </h1>
       </header>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {/* Formulario de carga */}
         <GastoForm 
           onAgregar={handleAgregar} 
@@ -107,38 +113,39 @@ function App() {
         <div style={{ 
           backgroundColor: '#ffffff', 
           border: '1px solid #e2e8f0', 
-          padding: '20px', 
+          padding: '16px 24px', 
           borderRadius: '16px', 
           display: 'flex', 
           flexDirection: 'row', 
           justifyContent: 'space-between', 
           alignItems: 'center',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)' // Sombra súper suave
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
             <label style={{ 
-              fontSize: '12px', 
+              fontSize: '11px', 
               fontWeight: '700', 
               textTransform: 'uppercase', 
               letterSpacing: '0.05em', 
-              color: '#64748b',
+              color: '#94a3b8',
               whiteSpace: 'nowrap'
             }}>
-              Filtrar por Categoría:
+              Filtrar por Categoría
             </label>
             <select 
               value={categoriaSeleccionada} 
               onChange={(e) => setCategoriaSeleccionada(e.target.value)}
               style={{ 
-                width: '224px', 
-                backgroundColor: '#f8fafc', 
-                border: '1px solid #e2e8f0', 
+                width: '240px', 
+                backgroundColor: '#ffffff', 
+                border: '1px solid #cbd5e1', 
                 color: '#334155', 
                 fontSize: '14px', 
-                borderRadius: '12px', 
+                borderRadius: '10px', 
                 padding: '8px 12px', 
                 outline: 'none',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'border-color 0.2s'
               }}
             >
               <option value="">Todas las categorías</option>
