@@ -1,48 +1,34 @@
 {
   "gastos": [
     {
-      "descripcion": "Juego Steam",
-      "monto": 8000,
-      "categoria": "ocio",
-      "fecha": "2024-11-02",
-      "id": "2"
-    },
-    {
-      "descripcion": "Merienda",
-      "monto": 1800,
-      "categoria": "comida",
-      "fecha": "2026-05-26",
-      "id": "KD0qNU0GtMI"
-    },
-    {
-      "descripcion": "Viajes",
-      "monto": 5000,
-      "categoria": "transporte",
-      "fecha": "2026-05-26",
-      "id": "yn7XNEEVH5w"
-    }
-  ],
-  "categorias": [
-    {
       "id": "1",
-      "nombre": "comida"
+      "descripcion": "Compras del mes",
+      "monto": 50000,
+      "categoria": "Supermercado",
+      "fecha": "2026-06-05"
     },
     {
       "id": "2",
-      "nombre": "ocio"
+      "descripcion": "Viajes",
+      "monto": 12000,
+      "categoria": "Transporte",
+      "fecha": "2026-06-06"
     },
     {
       "id": "3",
-      "nombre": "transporte"
-    },
-    {
-      "id": "4",
-      "nombre": "salud"
-    },
-    {
-      "id": "5",
-      "nombre": "otro"
+      "descripcion": "Abono de internet",
+      "monto": 20000,
+      "categoria": "Hogar y servicios",
+      "fecha": "2026-06-04"
     }
   ],
-  "$schema": "./node_modules/json-server/schema.json"
+  "categorias": [
+    { "id": "1", "nombre": "Supermercado" },
+    { "id": "2", "nombre": "Transporte" },
+    { "id": "3", "nombre": "Entretenimiento" },
+    { "id": "4", "nombre": "Estudio y trabajo" },
+    { "id": "5", "nombre": "Hogar y servicios" },
+    { "id": "6", "nombre": "Salud" },
+    { "id": "7", "nombre": "Otro" }
+  ]
 }
