@@ -11,7 +11,7 @@ function App() {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
   const [gastoAEditar, setGastoAEditar] = useState(null);
 
-  // useEffect se ejecuta AUTOMÁTICAMENTE cuando la app se abre en el navegador
+  // useEffect se ejecuta automáticamente cuando la app se abre en el navegador
   useEffect(() => {
     const cargarDatosIniciales = async () => {
       try {
@@ -27,11 +27,11 @@ function App() {
     cargarDatosIniciales();
   }, []);
 
-  // Función para agregar un gasto cuando el formulario se envíe
+  // Función para agregar un gasto
   const handleAgregar = async (nuevoGasto) => {
     try {
       const gastoGuardado = await servicioGastos.createGasto(nuevoGasto); // Envía el POST al backend
-      setGastos([...gastos, gastoGuardado]); // Agrega el resultado al estado creando una copia limpia
+      setGastos([...gastos, gastoGuardado]); 
     } catch (error) {
       alert("Error al guardar el gasto");
     }
@@ -42,10 +42,7 @@ function App() {
     try {
       const mapeado = await servicioGastos.updateGasto(id, datosActualizados);
       
-      // Actualizamos el estado reemplazando el viejo gasto por el modificado
       setGastos(gastos.map(g => g.id === id ? mapeado : g));
-      
-      // Limpiamos el estado de edición para que el formulario vuelva al modo "crear"
       setGastoAEditar(null);
     } catch (error) {
       alert("Error al actualizar el gasto");
@@ -54,22 +51,17 @@ function App() {
 
   // Función para eliminar un gasto al hacer clic en su botón
   const handleEliminar = async (id) => {
-    // Si el usuario toca "Cancelar", el signo ! invierte el resultado y corta la función
     if (!window.confirm("¿Estás seguro de eliminar el gasto?")) {
       return;
     }
-
-    // Si toca "Aceptar", se ejecuta tu lógica original de forma segura
     try {
       await servicioGastos.deleteGasto(id); // Envía el DELETE al backend
-      // Filtramos el estado para quitar el gasto borrado sin mutar el array original
       setGastos(gastos.filter(g => g.id !== id)); 
     } catch (error) {
       alert("Error al eliminar el gasto");
     }
   };
 
-  // Lógica de filtrado: si hay una categoría seleccionada, filtramos la lista
   const gastosFiltrados = categoriaSeleccionada
     ? gastos.filter(g => g.categoria === categoriaSeleccionada)
     : gastos;
@@ -111,7 +103,7 @@ function App() {
 
         {/* Selector de Filtros */}
           <div 
-            className="tarjeta-moderna" /* <--- ¡Le agregás esto acá! */
+            className="tarjeta-moderna"
             style={{ 
               backgroundColor: '#ffffff', 
               border: '1px solid #e2e8f0', 

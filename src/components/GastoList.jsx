@@ -1,6 +1,6 @@
 import GastoItem from './GastoItem';
 
-function GastoList({ gastos, onEliminar, onSeleccionarEditar }) { // <-- Agregamos la prop {
+function GastoList({ gastos, onEliminar, onSeleccionarEditar }) { 
   if (gastos.length === 0) {
     return <p>No hay gastos registrados para mostrar.</p>;
   }
@@ -22,7 +22,7 @@ function GastoList({ gastos, onEliminar, onSeleccionarEditar }) { // <-- Agregam
           key={gasto.id} 
           gasto={gasto} 
           onEliminar={onEliminar} 
-          onSeleccionarEditar={onSeleccionarEditar} // <-- Nueva línea
+          onSeleccionarEditar={onSeleccionarEditar}
           />
         ))}
       </tbody>
