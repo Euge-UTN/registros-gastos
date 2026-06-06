@@ -80,9 +80,11 @@ function App() {
   })
 
   const gastosConNombreCategoria = gastosOrdenados.map(gasto => {
-    const categoriaEncontrada =  categorias.find(c => c.id === gasto.categoriaId)
+    // Usamos el método .toString() para asegurarnos de comparar texto con texto
+    const categoriaEncontrada = categorias.find(c => c.id.toString() === gasto.categoriaId?.toString())
     return {
       ...gasto,
+      // Si encuentra la categoría le clava el nombre, si no, le pone un texto por defecto
       categoriaNombre: categoriaEncontrada ? categoriaEncontrada.nombre : 'Sin categoría'
     }
   })
