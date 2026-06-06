@@ -6,8 +6,6 @@ function GastoForm({ onAgregar, onEditar, gastoAEditar, categories }) {
   const [categoria, setCategoria] = useState('');
   const [fecha, setFecha] = useState('');
 
-  // Este useEffect "escucha" si App nos mandó un gasto para editar.
-  // Si cambia el gasto a editar, rellena los campos automáticamente en la pantalla.
   useEffect(() => {
     if (gastoAEditar) {
       setDescripcion(gastoAEditar.descripcion);
@@ -38,15 +36,12 @@ function GastoForm({ onAgregar, onEditar, gastoAEditar, categories }) {
       fecha
     };
 
-    // Si estamos en modo edición, llamamos a onEditar pasándole el ID.
-    // Si no, llamamos al onAgregar tradicional.
     if (gastoAEditar) {
       onEditar(gastoAEditar.id, datosGasto);
     } else {
       onAgregar(datosGasto);
     }
 
-    // Limpiamos los inputs
     setDescripcion('');
     setMonto('');
     setCategoria('');

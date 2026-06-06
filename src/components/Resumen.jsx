@@ -1,8 +1,6 @@
 function Resumen({ gastos }) {
-  // Usamos .reduce para sumar todos los montos de la lista actual [cite: 17]
   const total = gastos.reduce((suma, gasto) => suma + gasto.monto, 0);
-
-  // Buscamos el número más grande dentro de los montos [cite: 18]
+  
   const montoMasAlto = gastos.length > 0 
     ? Math.max(...gastos.map(g => g.monto)) 
     : 0;

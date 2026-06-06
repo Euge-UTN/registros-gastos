@@ -22,7 +22,7 @@ function GastoList({ gastos, onEliminar, onSeleccionarEditar }) {
           key={gasto.id} 
           gasto={gasto} 
           onEliminar={onEliminar} 
-          onSeleccionarEditar={onSeleccionarEditar} // <-- Nueva línea
+          onSeleccionarEditar={onSeleccionarEditar} //Editar gasto
       />
       ))}
       </tbody>

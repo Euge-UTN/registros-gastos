@@ -5,18 +5,17 @@ import GastoList from './components/GastoList';
 import Resumen from './components/Resumen';
 
 function App() {
-  // Definimos los estados globales de la aplicación [cite: 22]
+  // Estados globales de la aplicación
   const [gastos, setGastos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
   const [gastoAEditar, setGastoAEditar] = useState(null);
 
-  // useEffect se ejecuta AUTOMÁTICAMENTE cuando la app se abre en el navegador [cite: 24, 25]
   useEffect(() => {
     const cargarDatosIniciales = async () => {
       try {
-        const listaGastos = await servicioGastos.getGastos(); // Trae los gastos del backend [cite: 24]
-        const listaCategorias = await servicioGastos.getCategorias(); // Trae las categorías [cite: 25]
+        const listaGastos = await servicioGastos.getGastos(); // Trae los gastos del backend 
+        const listaCategorias = await servicioGastos.getCategorias(); // Trae las categorías 
         setGastos(listaGastos);
         setCategorias(listaCategorias);
       } catch (error) {
@@ -27,11 +26,11 @@ function App() {
     cargarDatosIniciales();
   }, []);
 
-  // Función para agregar un gasto cuando el formulario se envíe
+  // Función para agregar un gasto 
   const handleAgregar = async (nuevoGasto) => {
     try {
-      const gastoGuardado = await servicioGastos.createGasto(nuevoGasto); // Envía el POST al backend [cite: 27]
-      setGastos([...gastos, gastoGuardado]); // Agrega el resultado al estado creando una copia limpia [cite: 29]
+      const gastoGuardado = await servicioGastos.createGasto(nuevoGasto); // Envía el POST al backend 
+      setGastos([...gastos, gastoGuardado]); 
     } catch (error) {
       alert("Error al guardar el gasto");
     }
@@ -41,10 +40,8 @@ function App() {
     try {
       const mapeado = await servicioGastos.updateGasto(id, datosActualizados);
       
-      // Actualizamos el estado reemplazando el viejo gasto por el modificado
       setGastos(gastos.map(g => g.id === id ? mapeado : g));
       
-      // Limpiamos el estado de edición para que el formulario vuelva al modo "crear"
       setGastoAEditar(null);
     } catch (error) {
       alert("Error al actualizar el gasto");
@@ -53,15 +50,13 @@ function App() {
   // Función para eliminar un gasto al hacer clic en su botón
   const handleEliminar = async (id) => {
     try {
-      await servicioGastos.deleteGasto(id); // Envía el DELETE al backend [cite: 28]
-      // Filtramos el estado para quitar el gasto borrado sin mutar el array original [cite: 29]
+      await servicioGastos.deleteGasto(id);
       setGastos(gastos.filter(g => g.id !== id)); 
     } catch (error) {
       alert("Error al eliminar el gasto");
     }
   };
 
-  // Lógica de filtrado: si hay una categoría seleccionada, filtramos la lista [cite: 19]
   const gastosFiltrados = categoriaSeleccionada
     ? gastos.filter(g => g.categoria === categoriaSeleccionada)
     : gastos;
@@ -78,10 +73,8 @@ function App() {
         categories={categorias} 
       />
       
-      {/* Panel de totales */}
       <Resumen gastos={gastosFiltrados} />
 
-      {/* Selector de Filtros */}
       <div style={{ margin: '20px 0', padding: '10px', background: '#f5f5f5', borderRadius: '5px' }}>
         <label><strong>Filtrar por Categoría: </strong></label>
         <select value={categoriaSeleccionada} onChange={(e) => setCategoriaSeleccionada(e.target.value)}>
