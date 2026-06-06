@@ -75,57 +75,90 @@ function App() {
     : gastos;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-950">
-      <div className="max-w-4xl mx-auto px-4 py-12">
+  <div style={{ 
+    minHeight: '100vh', 
+    backgroundColor: '#E5DAF2', 
+    color: '#1e293b', 
+    padding: '48px 16px', 
+    fontFamily: 'system-ui, -apple-system, sans-serif' 
+  }}>
+    <div style={{ maxWidth: '56rem', margin: '0 auto' }}>
+      
+      {/* Título Principal */}
+      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#0f172a', margin: '0' }}>
+          Control de Gastos
+        </h1>
+      </header>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+        {/* Formulario de carga */}
+        <GastoForm 
+          onAgregar={handleAgregar} 
+          onEditar={handleEditar} 
+          gastoAEditar={gastoAEditar} 
+          categories={categorias} 
+        />
         
-        {/* Título Principal*/}
-        <header style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#0f172a', margin: '0' }}>
-            Control de Gastos
-          </h1>
-        </header>
+        {/* Panel de totales */}
+        <Resumen gastos={gastosFiltrados} />
 
-        <div className="space-y-8">
-          {/* Formulario de carga */}
-          <GastoForm 
-            onAgregar={handleAgregar} 
-            onEditar={handleEditar} 
-            gastoAEditar={gastoAEditar} 
-            categories={categorias} 
-          />
-          
-          {/* Panel de totales */}
-          <Resumen gastos={gastosFiltrados} />
-
-          {/* Selector de Filtros */}
-          <div className="bg-white border border-slate-200 p-5 rounded-2xl flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center shadow-sm">
-            <div className="w-full sm:w-auto flex items-center gap-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap">
-                Filtrar por Categoría:
-              </label>
-              <select 
-                value={categoriaSeleccionada} 
-                onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-                className="w-full sm:w-56 bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-3 py-2 outline-none focus:border-indigo-500 focus:bg-white transition-all cursor-pointer shadow-inner"
-              >
-                <option value="">Todas las categorías</option>
-                {categorias.map(cat => (
-                  <option key={cat.id} value={cat.nombre}>{cat.nombre}</option>
-                ))}
-              </select>
-            </div>
+        {/* Selector de Filtros */}
+        <div style={{ 
+          backgroundColor: '#ffffff', 
+          border: '1px solid #e2e8f0', 
+          padding: '20px', 
+          borderRadius: '16px', 
+          display: 'flex', 
+          flexDirection: 'row', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
+            <label style={{ 
+              fontSize: '12px', 
+              fontWeight: '700', 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.05em', 
+              color: '#64748b',
+              whiteSpace: 'nowrap'
+            }}>
+              Filtrar por Categoría:
+            </label>
+            <select 
+              value={categoriaSeleccionada} 
+              onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+              style={{ 
+                width: '224px', 
+                backgroundColor: '#f8fafc', 
+                border: '1px solid #e2e8f0', 
+                color: '#334155', 
+                fontSize: '14px', 
+                borderRadius: '12px', 
+                padding: '8px 12px', 
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="">Todas las categorías</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.nombre}>{cat.nombre}</option>
+              ))}
+            </select>
           </div>
-
-          {/* Tabla que muestra los resultados */}
-          <GastoList 
-            gastos={gastosFiltrados} 
-            onEliminar={handleEliminar} 
-            onSeleccionarEditar={setGastoAEditar} 
-          />
         </div>
+
+        {/* Tabla que muestra los resultados */}
+        <GastoList 
+          gastos={gastosFiltrados} 
+          onEliminar={handleEliminar} 
+          onSeleccionarEditar={setGastoAEditar} 
+        />
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
