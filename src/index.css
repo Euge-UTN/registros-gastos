@@ -1,0 +1,32 @@
+/* Reset global para que la página ocupe todo el espacio real y use fuentes modernas */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f8fafc; /* Gris neutro clarito de fondo */
+  color: #0f172a; /* Texto oscuro elegante */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Configuración para que el contenedor principal de React no rompa el diseño */
+#root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos globales para suavizar los inputs y selects del proyecto */
+input, select, button {
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+/* Animación sutil para cuando pases el mouse por encima de los botones o selectores */
+select:focus, input:focus {
+  border-color: #6366f1 !important; /* Un toque índigo muy fino al hacer foco */
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  outline: none;
+}
