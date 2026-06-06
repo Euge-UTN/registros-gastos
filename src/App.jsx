@@ -110,17 +110,20 @@ function App() {
         <Resumen gastos={gastosFiltrados} />
 
         {/* Selector de Filtros */}
-        <div style={{ 
-          backgroundColor: '#ffffff', 
-          border: '1px solid #e2e8f0', 
-          padding: '16px 24px', 
-          borderRadius: '16px', 
-          display: 'flex', 
-          flexDirection: 'row', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)' // Sombra súper suave
-        }}>
+          <div 
+            className="tarjeta-moderna" /* <--- ¡Le agregás esto acá! */
+            style={{ 
+              backgroundColor: '#ffffff', 
+              border: '1px solid #e2e8f0', 
+              padding: '16px 24px', 
+              borderRadius: '16px', 
+              display: 'flex', 
+              flexDirection: 'row', 
+              justifyContent: 'space-between', 
+              alignItems: 'center',
+              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05)'
+            }}
+          >
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', width: '100%' }}>
             <label style={{ 
               fontSize: '11px', 
