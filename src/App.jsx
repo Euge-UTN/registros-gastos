@@ -73,8 +73,8 @@ function App() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         
         {/* Título Principal*/}
-        <header className="text-center mb-10">
-          <h1 className="text-4xl font-black tracking-tight text-slate-900">
+        <header style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h1 style={{ fontSize: '36px', fontWeight: '900', color: '#0f172a', margin: '0' }}>
             Control de Gastos
           </h1>
         </header>
