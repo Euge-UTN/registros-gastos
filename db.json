@@ -1,11 +1,11 @@
 {
   "gastos": [
     {
-      "id": "1",
       "descripcion": "Compras del mes",
       "monto": 50000,
       "categoria": "Supermercado",
-      "fecha": "2026-06-05"
+      "fecha": "2026-06-03",
+      "id": "1"
     },
     {
       "id": "2",
